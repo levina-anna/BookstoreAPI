@@ -2,8 +2,6 @@
 
 API for accessing product and category data in an online store's database.
 
-![Screenshot](https://github.com/levina-anna/levina-anna.github.io/raw/main/images/Bookstore_API.png)
-
 ## Features
 
 - Retrieve a list of all products and their respective categories.
