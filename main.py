@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response, Query
+from fastapi import FastAPI, Query
 from sqlalchemy import create_engine, text
 import logging
 from fastapi.responses import JSONResponse
@@ -6,7 +6,11 @@ from fastapi.responses import JSONResponse
 # Создаем логгер
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
+app = FastAPI(
+    title="Bookstore API",
+    description="This is a simple API for accessing bookstore product and category data",
+    version="1.0.0"
+)
 
 # Параметры подключения к базе данных
 DATABASE_URL = "mysql://user:123@192.168.183.128:3307/bookstore"
@@ -22,7 +26,9 @@ except Exception as e:
 
 
 @app.get("/products_and_categories")
-def get_products_and_categories(category_id: int = Query(None, description="Фильтр по ID категории")):
+def get_products_and_categories(
+        category_id: int = Query(None, description="Filter by category ID")
+):
     sql_query = """
         SELECT 
             p.id AS product_id,
