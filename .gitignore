@@ -1,36 +1,40 @@
-# Игнорировать временные файлы
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+__pycache__
+
+# Logs and databases
 *.log
-*.swp
-*.tmp
+*.sql
 
-# Игнорировать файлы конфигурации
-config.ini
-config.yaml
-
-# Игнорировать файлы с настройками окружения
+# Environment variables
 .env
 
-# Игнорировать папку с зависимостями
-node_modules/
+# Virtual Environment
 venv/
-.env/
+env/
+ENV/
 
-# Игнорировать файлы сборки
-build/
+# Database
+.db
+sqlite.db
+
+# Dependencies
 dist/
+build/
+*.egg-info/
+__init__.py
+pip-selfcheck.json
 
-# Игнорировать локальные файлы базы данных
-*.sqlite
-*.db
+# Jupyter Notebook
+.ipynb_checkpoints
 
-# Игнорировать файлы с личной информацией
-secret_key.txt
-credentials.json
-
-# Игнорировать файлы IDE
+# IDE settings
 .idea/
 .vscode/
-
-# Игнорировать файлы конфигурации системы
-*.iml
-*.editorconfig
+*.swp
+*.swo
+*.swm
+*.swn
+.DS_Store
