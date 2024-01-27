@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, Query
 from sqlalchemy import create_engine, text
 import logging
+from fastapi.responses import JSONResponse
 
 # Создаем логгер
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ except Exception as e:
 
 
 @app.get("/products_and_categories")
-def get_products_and_categories():
+def get_products_and_categories(category_id: int = Query(None, description="Фильтр по ID категории")):
     sql_query = """
         SELECT 
             p.id AS product_id,
@@ -35,12 +36,18 @@ def get_products_and_categories():
         JOIN 
             product_category pc ON p.id = pc.product_id
         JOIN 
-            category c ON pc.category_id = c.category_id;
+            category c ON pc.category_id = c.category_id
     """
+
+    # Если предоставлен параметр category_id, добавляем условие в SQL запрос
+    if category_id is not None:
+        sql_query += " WHERE c.category_id = :category_id"
 
     with engine.connect() as connection:
         try:
-            result = connection.execute(text(sql_query))
+            # Если предоставлен параметр category_id, передаем его в запрос
+            result = connection.execute(text(sql_query),
+                                        {'category_id': category_id} if category_id is not None else {})
             # Структурируем данные
             products_and_categories = [
                 {
@@ -60,4 +67,5 @@ def get_products_and_categories():
         except Exception as e:
             # Логируем ошибку, если что-то пошло не так
             logger.error(f"Error in API request: {str(e)}")
-            return Response(content={"error": str(e)}, status_code=500)
+            # Используйте JSONResponse для возврата ошибки в формате JSON
+            return JSONResponse(content={"error": str(e)}, status_code=500)
