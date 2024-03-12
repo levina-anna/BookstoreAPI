@@ -24,6 +24,6 @@ uvicorn main:app --reload
 ```
 
 ## Technologies Used
-
+- Python 3.11
 - FastAPI
 - SQLAlchemy
