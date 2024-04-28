@@ -71,7 +71,7 @@ def get_products_and_categories(
             logger.info(f"API response: {products_and_categories}")
             return products_and_categories
         except Exception as e:
-            # Логируем ошибку, если что-то пошло не так
+            # Логируем ошибку
             logger.error(f"Error in API request: {str(e)}")
-            # Используйте JSONResponse для возврата ошибки в формате JSON
+            # Возвращаем ошибку в формате JSON
             return JSONResponse(content={"error": str(e)}, status_code=500)
