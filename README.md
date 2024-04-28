@@ -1,11 +1,11 @@
 # Bookstore API
 
-API for accessing product and category data in an online store's database.
+API for accessing product and category data in an online store's database
 
 ## Features
 
-- Retrieve a list of all products and their respective categories.
-- Filter products by category.
+- Retrieve a list of all products and their respective categories
+- Filter products by category
 
 ## API Usage
 
@@ -24,6 +24,7 @@ uvicorn main:app --reload
 ```
 
 ## Technologies Used
+
 - Python 3.11
 - FastAPI
 - SQLAlchemy
