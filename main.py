@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Query
 from sqlalchemy import create_engine, text
 import logging
@@ -12,8 +13,8 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Параметры подключения к базе данных
-DATABASE_URL = "mysql://user:123@192.168.183.128:3307/bookstore"
+# Получаем параметры подключения к базе данных из переменных окружения
+DATABASE_URL = os.getenv('DATABASE_URL', 'mysql://user:123@localhost:3307/bookstore')
 
 # Проверка подключения к базе данных
 try:
