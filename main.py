@@ -14,7 +14,7 @@ app = FastAPI(
 )
 
 # Получаем параметры подключения к базе данных из переменных окружения
-DATABASE_URL = os.getenv('DATABASE_URL', 'mysql://user:123@localhost:3307/bookstore')
+DATABASE_URL = os.getenv('DATABASE_URL', "mysql+pymysql://user:123@localhost:3307/bookstore")
 
 # Проверка подключения к базе данных
 try:
