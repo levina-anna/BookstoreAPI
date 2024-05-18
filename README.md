@@ -15,8 +15,8 @@ API for accessing product and category data in an online store's database
 ## Installation and Launch
 
 ```bash
-git clone <repository-url>
-cd <project-directory-name>
+git clone git@github.com:levina-anna/BookstoreAPI.git
+cd BookstoreAPI
 # Install dependencies
 pip install -r requirements.txt
 # Run the application
