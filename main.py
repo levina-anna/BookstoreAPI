@@ -4,7 +4,6 @@ from sqlalchemy import create_engine, text
 import logging
 from fastapi.responses import JSONResponse
 
-# Создаем логгер
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
@@ -13,17 +12,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Получаем параметры подключения к базе данных из переменных окружения
 DATABASE_URL = os.getenv('DATABASE_URL', "mysql+pymysql://user:123@localhost:3307/bookstore")
 
-# Проверка подключения к базе данных
 try:
     engine = create_engine(DATABASE_URL)
     connection = engine.connect()
     connection.close()
-    print("Подключение к базе данных успешно")
+    print("Connection to database successful")
 except Exception as e:
-    print(f"Ошибка при подключении к базе данных: {str(e)}")
+    print(f"Error connecting to database: {str(e)}")
 
 
 @app.get("/products_and_categories")
@@ -46,16 +43,14 @@ def get_products_and_categories(
             category c ON pc.category_id = c.category_id
     """
 
-    # Если предоставлен параметр category_id, добавляем условие в SQL запрос
     if category_id is not None:
         sql_query += " WHERE c.category_id = :category_id"
 
     with engine.connect() as connection:
         try:
-            # Если предоставлен параметр category_id, передаем его в запрос
             result = connection.execute(text(sql_query),
                                         {'category_id': category_id} if category_id is not None else {})
-            # Структурируем данные
+
             products_and_categories = [
                 {
                     "product_id": row[0],
@@ -67,12 +62,9 @@ def get_products_and_categories(
                 }
                 for row in result
             ]
-            # Добавляем логирование
             logger.info(f"API request: endpoint='/products_and_categories'")
             logger.info(f"API response: {products_and_categories}")
             return products_and_categories
         except Exception as e:
-            # Логируем ошибку
             logger.error(f"Error in API request: {str(e)}")
-            # Возвращаем ошибку в формате JSON
             return JSONResponse(content={"error": str(e)}, status_code=500)
