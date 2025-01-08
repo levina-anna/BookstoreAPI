@@ -14,17 +14,19 @@ API for accessing product and category data in an online store's database
 
 ## Installation and Launch
 
+1. Clone the repository:
 ```bash
 git clone git@github.com:levina-anna/BookstoreAPI.git
 cd BookstoreAPI
-# Install dependencies
-pip install -r requirements.txt
-# Run the application
-uvicorn main:app --reload
 ```
+2. Launch the application using Docker:
+```
+docker-compose up --build
+```
+3. Open the application in your browser: http://localhost:8002/docs
 
 ## Technologies Used
 
-- Python 3.11
-- FastAPI
-- SQLAlchemy
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.79.0-yellow)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-1.4.39-pink)
