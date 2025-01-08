@@ -1,4 +1,5 @@
 import os
+import time
 from fastapi import FastAPI, Query
 from sqlalchemy import create_engine, text
 import logging
@@ -12,21 +13,29 @@ app = FastAPI(
     version="1.0.0"
 )
 
-DATABASE_URL = os.getenv('DATABASE_URL', "mysql+pymysql://user:123@localhost:3307/bookstore")
+DATABASE_URL = os.getenv('DATABASE_URL', "mysql+mysqldb://user:123@localhost:3307/bookstore")
 
-try:
-    engine = create_engine(DATABASE_URL)
-    connection = engine.connect()
-    connection.close()
-    print("Connection to database successful")
-except Exception as e:
-    print(f"Error connecting to database: {str(e)}")
-
+engine = None
+for _ in range(10):
+    try:
+        engine = create_engine(DATABASE_URL)
+        with engine.connect() as connection:
+            print("Connection to database successful")
+        break
+    except Exception as e:
+        print(f"Database not ready, retrying... Error: {str(e)}")
+        time.sleep(1)
+else:
+    print("Failed to connect to the database after 10 retries")
 
 @app.get("/products_and_categories")
 def get_products_and_categories(
         category_id: int = Query(None, description="Filter by category ID")
 ):
+    global engine
+    if engine is None:
+        return JSONResponse(content={"error": "Database connection is not initialized"}, status_code=500)
+
     sql_query = """
         SELECT 
             p.id AS product_id,
@@ -48,8 +57,10 @@ def get_products_and_categories(
 
     with engine.connect() as connection:
         try:
-            result = connection.execute(text(sql_query),
-                                        {'category_id': category_id} if category_id is not None else {})
+            result = connection.execute(
+                text(sql_query),
+                {'category_id': category_id} if category_id is not None else {}
+            )
 
             products_and_categories = [
                 {

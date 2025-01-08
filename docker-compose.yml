@@ -10,11 +10,13 @@ services:
       - "3307:3306"
     networks:
       - bookstore-network
+    volumes:
+      - ./db-init:/docker-entrypoint-initdb.d
 
   api:
     build: .
     environment:
-      DATABASE_URL: "mysql://user:123@db:3306/bookstore"
+      DATABASE_URL: "mysql+mysqldb://user:123@db:3306/bookstore"
     depends_on:
       - db
     ports:
